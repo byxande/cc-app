@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Cripto moedas</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <!--(ionInput)="coinsFilter($event)" -->
+  <ion-searchbar ></ion-searchbar>
+  <ion-list>
+      <ion-item *ngFor="let coin of getAllCoins()">
+        {{ coin.Name }}
+      </ion-item>
+    </ion-list>
+</ion-content>

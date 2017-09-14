@@ -1,0 +1,6 @@
+[0913/204855.376:ERROR:process_info.cc(632)] range at 0x8f69765400000000, size 0x2ba fully unreadable
+[0913/204855.452:ERROR:process_info.cc(632)] range at 0x8f6976b600000000, size 0x2ba fully unreadable
+[0913/204855.460:ERROR:process_info.cc(632)] range at 0x0, size 0x2ba fully unreadable
+[0913/204905.085:ERROR:process_reader_win.cc(242)] ReadMemory at 0xd686595000 of 5984 bytes failed: Somente uma parte de um pedido ReadProcessMemory ou WriteProcessMemory foi concluída. (0x12B)
+[0913/204905.110:ERROR:crash_report_exception_handler.cc(116)] WriteEverything failed
+[0913/204905.178:ERROR:scoped_process_suspend.cc(39)] NtResumeProcess: Tentou-se acessar um processo de saída.  (0xc000010a)
