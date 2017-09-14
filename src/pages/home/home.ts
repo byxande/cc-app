@@ -6,10 +6,8 @@ import {
   LoadingController,
   AlertController
 } from "ionic-angular";
-import {
-  Http
-} from "@angular/http";
-import {Request} from "../../util/requests";
+import { Http } from "@angular/http";
+import { Coin } from "../../models/coin";
 
 @Component({
   selector: "page-home",
@@ -17,8 +15,10 @@ import {Request} from "../../util/requests";
 })
 export class HomePage {
   allCoinsEp: string;
-  priceUrl: string;
-  coinsList: Array<Object>;
+  filter: string;
+  coins: Array<Coin>;
+  coin: Coin;
+  list: Array<string>;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -26,74 +26,47 @@ export class HomePage {
     private http: Http,
     public alertCtrl: AlertController
   ) {
-    this.allCoinsEp = "https://www.cryptocompare.com/api/data/coinlist/";
-    this.priceUrl ="https://min-api.cryptocompare.com/data/price";
+    this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?limit=10";
+    this.filter = "";
+    this.list = [];
+    this.coin = new Coin();
+    this.coin.Id = "";
+    this.coin.Name = "";
+    this.coin.Price_Usd = "";
+    this.coins = [];
   }
 
-getAllCoins(){  
-  this.http.get(this.allCoinsEp)
-  .subscribe(
-    res => {
-      console.log(res.json().Data);
-      
-      debugger;
-      /* this.coinsList.push(res.json().Data)
-      return this.coinsList.slice(0,10); */
-    },
-    err => {
-      console.log(err);
-    }
-  );
-}
+  filterCoins(filter: string) {
+    debugger;
+    return filter === ""
+      ? this.coins
+      : this.coins.filter(
+          c => c.Name.toLowerCase() === filter || c.Id.toLowerCase() === filter
+        );
+  }
 
-getPrice(coin, toCoins){
-  let params: URLSearchParams = new URLSearchParams();
-  params.set('fsym', coin);
-  params.set('tsym', toCoins);
-  this.http.get(this.priceUrl,{
-    search:params
-  })
-  .subscribe(
-    res => {      
-      console.log();
-      debugger;
-      this.coinsList.push(res.json().Data)
-    },
-    err => {
-      console.log(err);
-    }
-  );
-}
- /*  coinsFilter(ev: any) {
-    // set val to the value of the searchbar
-    let val = ev.target.value;
+  requestCoins() {
+    this.http.get(this.allCoinsEp).subscribe(
+      res => {
+        let coin = this.coin;
+        let coins = this.coins;
+        res.json().map(function(fon) {
+          coin.Id = fon.Id;
+          coin.Name = fon.Name;
+          coin.Price_Usd = fon.price_usd;
 
-    // if the value is an empty string don't filter the items
-    if (val && val.trim() != '') {
-      this.coinsList = this.coinsList.filter((coin) => {
-        return (coin.indexOf(val.toLowerCase()) > -1);
-      })
-    }
-  } */
-
-  /*  coinClick() {
-    let loading = this.loadingCtrl.create({
-      content: 'Um momento...'
-    });
-    loading.present();
-
-    this.http.get( this.requestUrl, {     
-    }).subscribe(
-      data => {
-        let coinJson = data.json();
-          if(coinJson.Response === "Success"){
-            this.coinsDict[coinJson.CoinName] = {Id: coinJson.Id, Name: coinJson.Name, ImgUrl: coinJson.ImageUrl};
-            return  this.coinsDict;
-          }
+          coins.push(this.coin);
+        });
       },
-      err => {        
+      err => {
         console.log(err);
-      });
-      loading.dismiss();
-  } */
+      }
+    );
+    debugger
+    return this.coins;
+  }
+
+  private newFunction() {
+    coin;
+  }
 }

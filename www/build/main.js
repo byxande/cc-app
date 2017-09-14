@@ -65,7 +65,7 @@ var TabsPage = (function () {
     return TabsPage;
 }());
 TabsPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc-app\src\pages\tabs\tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc-app\src\pages\tabs\tabs.html"*/
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\tabs\tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\tabs\tabs.html"*/
     }),
     __metadata("design:paramtypes", [])
 ], TabsPage);
@@ -100,7 +100,7 @@ var AboutPage = (function () {
 }());
 AboutPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-about',template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc-app\src\pages\about\about.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      About\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc-app\src\pages\about\about.html"*/
+        selector: 'page-about',template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\about\about.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      About\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\about\about.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
 ], AboutPage);
@@ -135,7 +135,7 @@ var ContactPage = (function () {
 }());
 ContactPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-contact',template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc-app\src\pages\contact\contact.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Contact\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n    <ion-item>\n      <ion-icon name="ionic" item-left></ion-icon>\n      @ionicframework\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc-app\src\pages\contact\contact.html"*/
+        selector: 'page-contact',template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\contact\contact.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Contact\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n    <ion-item>\n      <ion-icon name="ionic" item-left></ion-icon>\n      @ionicframework\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\contact\contact.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
 ], ContactPage);
@@ -152,6 +152,7 @@ ContactPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_coin__ = __webpack_require__(265);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -164,6 +165,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var HomePage = (function () {
     function HomePage(navCtrl, navParams, loadingCtrl, http, alertCtrl) {
         this.navCtrl = navCtrl;
@@ -171,41 +173,45 @@ var HomePage = (function () {
         this.loadingCtrl = loadingCtrl;
         this.http = http;
         this.alertCtrl = alertCtrl;
-        this.allCoinsEp = "https://www.cryptocompare.com/api/data/coinlist/";
-        this.priceUrl = "https://min-api.cryptocompare.com/data/price";
+        this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?limit=10";
+        this.filter = "";
+        this.list = [];
+        this.coin = new __WEBPACK_IMPORTED_MODULE_3__models_coin__["a" /* Coin */]();
+        this.coin.Id = "";
+        this.coin.Name = "";
+        this.coin.Price_Usd = "";
+        this.coins = [];
     }
-    HomePage.prototype.getAllCoins = function () {
-        this.http.get(this.allCoinsEp)
-            .subscribe(function (res) {
-            console.log(res.json().Data);
-            debugger;
-            /* this.coinsList.push(res.json().Data)
-            return this.coinsList.slice(0,10); */
-        }, function (err) {
-            console.log(err);
-        });
+    HomePage.prototype.filterCoins = function (filter) {
+        debugger;
+        return filter === ""
+            ? this.coins
+            : this.coins.filter(function (c) { return c.Name.toLowerCase() === filter || c.Id.toLowerCase() === filter; });
     };
-    HomePage.prototype.getPrice = function (coin, toCoins) {
+    HomePage.prototype.requestCoins = function () {
         var _this = this;
-        var params = new URLSearchParams();
-        params.set('fsym', coin);
-        params.set('tsym', toCoins);
-        this.http.get(this.priceUrl, {
-            search: params
-        })
-            .subscribe(function (res) {
-            console.log();
-            debugger;
-            _this.coinsList.push(res.json().Data);
+        this.http.get(this.allCoinsEp).subscribe(function (res) {
+            var coin = _this.coin;
+            var coins = _this.coins;
+            res.json().map(function (fon) {
+                coin.Id = fon.Id;
+                coin.Name = fon.Name;
+                coin.Price_Usd = fon.price_usd;
+                coins.push(this.coin);
+            });
         }, function (err) {
             console.log(err);
         });
+        return this.coins;
+    };
+    HomePage.prototype.newFunction = function () {
+        coin;
     };
     return HomePage;
 }());
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: "page-home",template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc-app\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Cripto moedas</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n    <!--(ionInput)="coinsFilter($event)" -->\n  <ion-searchbar ></ion-searchbar>\n  <ion-list>\n      <ion-item *ngFor="let coin of getAllCoins()">\n        {{ coin.Name }}\n      </ion-item>\n    </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc-app\src\pages\home\home.html"*/
+        selector: "page-home",template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Cripto moedas</ion-title>\n  </ion-navbar>\n  <ion-searchbar  [(ngModel)]= "filter" [showCancelButton]="filter != \'\' " ></ion-searchbar>\n</ion-header>\n\n<ion-content padding>\n    <!--(ionInput)="coinsFilter($event)" -->  \n  <ion-list [virtualScroll]="requestCoins()">\n      <ion-item *virtualItem="let coin">\n        {{ coin.name }}\n      </ion-item>\n    </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object])
 ], HomePage);
@@ -338,12 +344,27 @@ var MyApp = (function () {
     return MyApp;
 }());
 MyApp = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc-app\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc-app\src\app\app.html"*/
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\app\app.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
 ], MyApp);
 
 //# sourceMappingURL=app.component.js.map
+
+/***/ }),
+
+/***/ 265:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Coin; });
+var Coin = (function () {
+    function Coin() {
+    }
+    return Coin;
+}());
+
+//# sourceMappingURL=coin.js.map
 
 /***/ })
 
