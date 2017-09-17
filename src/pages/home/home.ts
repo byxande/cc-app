@@ -15,10 +15,8 @@ import { Coin } from "../../models/coin";
 })
 export class HomePage {
   allCoinsEp: string;
-  filter: string;
+  filter: string = ''
   coins: Array<Coin>;
-  coin: Coin;
-  list: Array<string>;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -26,47 +24,45 @@ export class HomePage {
     private http: Http,
     public alertCtrl: AlertController
   ) {
-    this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?limit=10";
-    this.filter = "";
-    this.list = [];
-    this.coin = new Coin();
-    this.coin.Id = "";
-    this.coin.Name = "";
-    this.coin.Price_Usd = "";
-    this.coins = [];
+    this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=5"
+    
+    this.coins = []
+    this.requestCoins() 
   }
 
-  filterCoins(filter: string) {
-    debugger;
-    return filter === ""
-      ? this.coins
-      : this.coins.filter(
-          c => c.Name.toLowerCase() === filter || c.Id.toLowerCase() === filter
-        );
+  filterCoins(filter){
+    filter = filter.toLowerCase()
+    return filter === ''
+    ? this.coins
+    : this.coins.filter(coin => {
+       coin.name.toLowerCase().indexOf(filter) !== -1 
+       || coin.id.toLowerCase().indexOf(filter) !== -1;
+    })
   }
+
 
   requestCoins() {
-    this.http.get(this.allCoinsEp).subscribe(
+    this.http.get(this.allCoinsEp)
+    .subscribe(
       res => {
-        let coin = this.coin;
-        let coins = this.coins;
-        res.json().map(function(fon) {
-          coin.Id = fon.Id;
-          coin.Name = fon.Name;
-          coin.Price_Usd = fon.price_usd;
-
-          coins.push(this.coin);
+        let coinsAux:Array<Coin> = []
+        res.json().map(function(fon){
+          let coin = new Coin();
+          coin.id = fon.id
+          coin.name = fon.name
+          coin.priceUsd = fon.price_usd
+          coin.priceBrl = fon.price_brl
+          /* coin.volBrl = fon.24h_volume_brl */
+          coin.percent1h = fon.percent_change_1h
+          coin.percent24h = fon.percent_change_24h
+          coin.symbol = fon.symbol
+          coinsAux.push(coin)
         });
+        this.coins = coinsAux
       },
       err => {
         console.log(err);
       }
-    );
-    debugger
-    return this.coins;
-  }
-
-  private newFunction() {
-    coin;
-  }
+    );   
+  }  
 }

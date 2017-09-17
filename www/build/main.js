@@ -173,50 +173,55 @@ var HomePage = (function () {
         this.loadingCtrl = loadingCtrl;
         this.http = http;
         this.alertCtrl = alertCtrl;
-        this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?limit=10";
-        this.filter = "";
-        this.list = [];
-        this.coin = new __WEBPACK_IMPORTED_MODULE_3__models_coin__["a" /* Coin */]();
-        this.coin.Id = "";
-        this.coin.Name = "";
-        this.coin.Price_Usd = "";
+        this.filter = '';
+        this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=5";
         this.coins = [];
+        this.requestCoins();
     }
     HomePage.prototype.filterCoins = function (filter) {
-        debugger;
-        return filter === ""
+        filter = filter.toLowerCase();
+        return filter === ''
             ? this.coins
-            : this.coins.filter(function (c) { return c.Name.toLowerCase() === filter || c.Id.toLowerCase() === filter; });
+            : this.coins.filter(function (coin) {
+                coin.name.toLowerCase().indexOf(filter) !== -1
+                    || coin.id.toLowerCase().indexOf(filter) !== -1;
+            });
     };
     HomePage.prototype.requestCoins = function () {
         var _this = this;
-        this.http.get(this.allCoinsEp).subscribe(function (res) {
-            var coin = _this.coin;
-            var coins = _this.coins;
+        this.http.get(this.allCoinsEp)
+            .subscribe(function (res) {
+            var coinsAux = [];
             res.json().map(function (fon) {
-                coin.Id = fon.Id;
-                coin.Name = fon.Name;
-                coin.Price_Usd = fon.price_usd;
-                coins.push(this.coin);
+                var coin = new __WEBPACK_IMPORTED_MODULE_3__models_coin__["a" /* Coin */]();
+                coin.id = fon.id;
+                coin.name = fon.name;
+                coin.priceUsd = fon.price_usd;
+                coin.priceBrl = fon.price_brl;
+                /* coin.volBrl = fon.24h_volume_brl */
+                coin.percent1h = fon.percent_change_1h;
+                coin.percent24h = fon.percent_change_24h;
+                coin.symbol = fon.symbol;
+                coinsAux.push(coin);
             });
+            _this.coins = coinsAux;
         }, function (err) {
             console.log(err);
         });
-        return this.coins;
-    };
-    HomePage.prototype.newFunction = function () {
-        coin;
     };
     return HomePage;
 }());
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: "page-home",template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Cripto moedas</ion-title>\n  </ion-navbar>\n  <ion-searchbar  [(ngModel)]= "filter" [showCancelButton]="filter != \'\' " ></ion-searchbar>\n</ion-header>\n\n<ion-content padding>\n    <!--(ionInput)="coinsFilter($event)" -->  \n  <ion-list [virtualScroll]="requestCoins()">\n      <ion-item *virtualItem="let coin">\n        {{ coin.name }}\n      </ion-item>\n    </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/
+        selector: "page-home",template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/'<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">\n\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Cripto moedas</ion-title>\n  </ion-navbar>\n  <ion-searchbar [(ngModel)]="filter"></ion-searchbar>\n</ion-header>\n<ion-content ng-controller="MyCtrl" padding>\n  <ion-grid>\n    <ion-list [virtualScroll]="filterCoins(filter)">\n\n      <ion-item *virtualItem="let coin">\n        <ion-row >\n          <ion-card>\n            <ion-card-header (click)="toggleAccordion()">\n              <ion-col>\n                <h1>{{coin.symbol}}</h1>\n                <h3>{{coin.name}}</h3>\n              </ion-col>\n              <ion-col>\n                <h2>Valor BRL</h2>\n                <P>R${{coin.priceBrl}}</P>\n              </ion-col>\n            </ion-card-header>\n            <ion-card-content #cc>\n            </ion-card-content>\n          </ion-card>\n        </ion-row>\n      </ion-item>\n\n    </ion-list>\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
 ], HomePage);
 
-var _a, _b, _c, _d, _e;
 //# sourceMappingURL=home.js.map
 
 /***/ }),
@@ -248,15 +253,17 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_contact_contact__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(187);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_http__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_accordion_accordion__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_status_bar__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_splash_screen__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_http__ = __webpack_require__(195);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -280,12 +287,13 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__pages_about_about__["a" /* AboutPage */],
             __WEBPACK_IMPORTED_MODULE_5__pages_contact_contact__["a" /* ContactPage */],
             __WEBPACK_IMPORTED_MODULE_6__pages_home_home__["a" /* HomePage */],
-            __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__["a" /* TabsPage */]
+            __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__["a" /* TabsPage */],
+            __WEBPACK_IMPORTED_MODULE_8__components_accordion_accordion__["a" /* AccordionComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* MyApp */]),
-            __WEBPACK_IMPORTED_MODULE_10__angular_http__["b" /* HttpModule */]
+            __WEBPACK_IMPORTED_MODULE_11__angular_http__["b" /* HttpModule */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
         entryComponents: [
@@ -296,8 +304,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__pages_tabs_tabs__["a" /* TabsPage */]
         ],
         providers: [
-            __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__["a" /* StatusBar */],
-            __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__["a" /* SplashScreen */],
+            __WEBPACK_IMPORTED_MODULE_9__ionic_native_status_bar__["a" /* StatusBar */],
+            __WEBPACK_IMPORTED_MODULE_10__ionic_native_splash_screen__["a" /* SplashScreen */],
             { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] }
         ]
     })
@@ -365,6 +373,55 @@ var Coin = (function () {
 }());
 
 //# sourceMappingURL=coin.js.map
+
+/***/ }),
+
+/***/ 266:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AccordionComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+/**
+ * Generated class for the AccordionComponent component.
+ *
+ * See https://angular.io/api/core/Component for more info on Angular
+ * Components.
+ */
+var AccordionComponent = (function () {
+    function AccordionComponent() {
+        this.expanded = false;
+    }
+    AccordionComponent.prototype.ngOnInit = function () {
+        debugger;
+        console.log(this.cardContent.nativeElement);
+    };
+    AccordionComponent.prototype.toggleAccordion = function () {
+    };
+    return AccordionComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])("cc"),
+    __metadata("design:type", Object)
+], AccordionComponent.prototype, "cardContent", void 0);
+AccordionComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        selector: 'accordion',template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\components\accordion\accordion.html"*/'<!-- Generated template for the AccordionComponent component -->\n<div>\n  {{text}}\n</div>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\components\accordion\accordion.html"*/
+    }),
+    __metadata("design:paramtypes", [])
+], AccordionComponent);
+
+//# sourceMappingURL=accordion.js.map
 
 /***/ })
 

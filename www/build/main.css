@@ -25198,3 +25198,13 @@ ion-navbar.toolbar {
     padding-top: calc(16px + 20px);
   }
 }
+
+accordion .card-header {
+  background-color: #488aff;
+  color: white;
+}
+
+accordion .card-content {
+  padding: 0px 16px;
+  max-height: 0px;
+}

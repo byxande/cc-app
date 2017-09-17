@@ -1,10 +1,11 @@
-
 export class Coin {
-    public Id:string
-    public Name:string
-    public ImgUrl?:string
-    public Price_Usd:string
-    constructor() {
-       
-      }
-  }
+  public id: string
+  public name: string 
+  public priceUsd: string
+  public priceBrl: string
+  public volBrl: string
+  public percent1h: number
+  public percent24h:number
+  public symbol:string
+  constructor() {}
+}
