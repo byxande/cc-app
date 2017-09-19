@@ -8,28 +8,29 @@
   </ion-navbar>
   <ion-searchbar [(ngModel)]="filter"></ion-searchbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
+  <ngb-accordion [virtualScroll]="filterCoins(filter)" #acc="ngbAccordion" activeIds="ngb-panel-0">
 
-  <ion-list [virtualScroll]="filterCoins(filter)" >
-    <ion-card *virtualItem="let coin" >
-      <ion-item>
-        <ion-card-content>
+    <ngb-panel *virtualItem="let coin">
+      <ion-card>
+        <ng-template ngbPanelTitle>
           <ion-row>
             <ion-col>
               <h2>{{coin.symbol}}</h2>
               <P>{{coin.name}}</P>
             </ion-col>
             <ion-col>
-              <P>R${{coin.priceBrl}}</P>
+              <h2>R${{coin.priceBrl}}</h2>
             </ion-col>
-            <ion-col></ion-col>
-            <ion-icon>
-
-            </ion-icon>
           </ion-row>
-        </ion-card-content>
-      </ion-item>
-    </ion-card>
-  </ion-list>
+        </ng-template>
+        <ng-template ngbPanelContent>
 
+        </ng-template>
+
+      </ion-card>
+
+    </ngb-panel>
+
+  </ngb-accordion>
 </ion-content>

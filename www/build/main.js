@@ -172,7 +172,7 @@ var HomePage = (function () {
         this.navParams = navParams;
         this.http = http;
         this.filter = '';
-        this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=5";
+        this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=20";
         this.coins = [];
         this.requestCoins();
     }
@@ -207,14 +207,11 @@ var HomePage = (function () {
             console.log(err);
         });
     };
-    HomePage.prototype.toggleSection = function (i) {
-        this.information[i].open = !this.information[i].open;
-    };
     return HomePage;
 }());
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: "page-home",template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/'<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">\n\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Cripto moedas</ion-title>\n  </ion-navbar>\n  <ion-searchbar [(ngModel)]="filter"></ion-searchbar>\n</ion-header>\n<ion-content padding>\n\n  <ion-list [virtualScroll]="filterCoins(filter)" >\n    <ion-card *virtualItem="let coin" >\n      <ion-item>\n        <ion-card-content>\n          <ion-row>\n            <ion-col>\n              <h2>{{coin.symbol}}</h2>\n              <P>{{coin.name}}</P>\n            </ion-col>\n            <ion-col>\n              <P>R${{coin.priceBrl}}</P>\n            </ion-col>\n            <ion-col></ion-col>\n            <ion-icon>\n\n            </ion-icon>\n          </ion-row>\n        </ion-card-content>\n      </ion-item>\n    </ion-card>\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/
+        selector: "page-home",template:/*ion-inline-start:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/'<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">\n\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Cripto moedas</ion-title>\n  </ion-navbar>\n  <ion-searchbar [(ngModel)]="filter"></ion-searchbar>\n</ion-header>\n<ion-content>\n  <ngb-accordion [virtualScroll]="filterCoins(filter)" #acc="ngbAccordion" activeIds="ngb-panel-0">\n\n    <ngb-panel *virtualItem="let coin">\n      <ion-card>\n        <ng-template ngbPanelTitle>\n          <ion-row>\n            <ion-col>\n              <h2>{{coin.symbol}}</h2>\n              <P>{{coin.name}}</P>\n            </ion-col>\n            <ion-col>\n              <h2>R${{coin.priceBrl}}</h2>\n            </ion-col>\n          </ion-row>\n        </ng-template>\n        <ng-template ngbPanelContent>\n\n        </ng-template>\n\n      </ion-card>\n\n    </ngb-panel>\n\n  </ngb-accordion>\n</ion-content>\n'/*ion-inline-end:"C:\Users\Alexandre\Desktop\cc\src\pages\home\home.html"*/
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]) === "function" && _c || Object])
 ], HomePage);

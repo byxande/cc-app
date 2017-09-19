@@ -16,7 +16,7 @@ export class HomePage {
   information:any
   constructor(
     public navCtrl: NavController, public navParams: NavParams, private http: Http) {
-    this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=5"
+    this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=20"
     
     this.coins = []
     this.requestCoins() 
@@ -56,8 +56,5 @@ export class HomePage {
       }
     );   
   }  
-
-  toggleSection(i){
-    this.information[i].open = !this.information[i].open
-  }
+  
 }
