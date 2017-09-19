@@ -1,11 +1,7 @@
 import { ContentType } from "@angular/http/src/enums";
 import { Component } from "@angular/core";
-import {
-  NavController,
-  NavParams,
-  LoadingController,
-  AlertController
-} from "ionic-angular";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NavController,NavParams} from "ionic-angular";
 import { Http } from "@angular/http";
 import { Coin } from "../../models/coin";
 
@@ -14,16 +10,12 @@ import { Coin } from "../../models/coin";
   templateUrl: "home.html"
 })
 export class HomePage {
-  allCoinsEp: string;
+  allCoinsEp: string
   filter: string = ''
-  coins: Array<Coin>;
+  coins: Array<Coin>
+  information:any
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public loadingCtrl: LoadingController,
-    private http: Http,
-    public alertCtrl: AlertController
-  ) {
+    public navCtrl: NavController, public navParams: NavParams, private http: Http) {
     this.allCoinsEp = "https://api.coinmarketcap.com/v1/ticker/?convert=BRL&limit=5"
     
     this.coins = []
@@ -40,11 +32,10 @@ export class HomePage {
     })
   }
 
-
   requestCoins() {
     this.http.get(this.allCoinsEp)
     .subscribe(
-      res => {
+      res => {        
         let coinsAux:Array<Coin> = []
         res.json().map(function(fon){
           let coin = new Coin();
@@ -65,4 +56,8 @@ export class HomePage {
       }
     );   
   }  
+
+  toggleSection(i){
+    this.information[i].open = !this.information[i].open
+  }
 }

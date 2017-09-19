@@ -8,29 +8,28 @@
   </ion-navbar>
   <ion-searchbar [(ngModel)]="filter"></ion-searchbar>
 </ion-header>
-<ion-content ng-controller="MyCtrl" padding>
-  <ion-grid>
-    <ion-list [virtualScroll]="filterCoins(filter)">
+<ion-content padding>
 
-      <ion-item *virtualItem="let coin">
-        <ion-row >
-          <ion-card>
-            <ion-card-header (click)="toggleAccordion()">
-              <ion-col>
-                <h1>{{coin.symbol}}</h1>
-                <h3>{{coin.name}}</h3>
-              </ion-col>
-              <ion-col>
-                <h2>Valor BRL</h2>
-                <P>R${{coin.priceBrl}}</P>
-              </ion-col>
-            </ion-card-header>
-            <ion-card-content #cc>
-            </ion-card-content>
-          </ion-card>
-        </ion-row>
+  <ion-list [virtualScroll]="filterCoins(filter)" >
+    <ion-card *virtualItem="let coin" >
+      <ion-item>
+        <ion-card-content>
+          <ion-row>
+            <ion-col>
+              <h2>{{coin.symbol}}</h2>
+              <P>{{coin.name}}</P>
+            </ion-col>
+            <ion-col>
+              <P>R${{coin.priceBrl}}</P>
+            </ion-col>
+            <ion-col></ion-col>
+            <ion-icon>
+
+            </ion-icon>
+          </ion-row>
+        </ion-card-content>
       </ion-item>
+    </ion-card>
+  </ion-list>
 
-    </ion-list>
-  </ion-grid>
 </ion-content>
